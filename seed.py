@@ -1,5 +1,6 @@
 from app import app
 from models import db, Cupcake
+# from flask_cors import CORS, cross_origin
 
 
 db.drop_all()

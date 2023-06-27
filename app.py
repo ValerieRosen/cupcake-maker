@@ -1,9 +1,12 @@
-#Flask app for cupcakes 
+# Flask app for cupcakes
 from flask import Flask, request, jsonify, render_template
+from flask_cors import CORS, cross_origin
 
 from models import db, connect_db, Cupcake
 
 app = Flask(__name__)
+CORS(app)
+
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///cupcakes'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -11,13 +14,19 @@ app.config['SECRET_KEY'] = "canttellanyone"
 
 connect_db(app)
 
-###Routes###
+### Routes###
+
 
 @app.route("/")
+def login():
+    return jsonify({'success': 'ok'})
+
+
 def root():
     """Render homepage"""
 
     return render_template("index.html")
+
 
 @app.route("/api/cupcakes")
 def list_cupcakes():
@@ -26,6 +35,7 @@ def list_cupcakes():
 
     cupcakes = [cupcake.to_dict() for cupcake in Cupcake.query.all()]
     return jsonify(cupcakes=cupcakes)
+
 
 @app.route("/api/cupcakes", methods=["POST"])
 def create_cupcake():
@@ -40,12 +50,13 @@ def create_cupcake():
         rating=data['rating'],
         size=data['size'],
         image=data['image'] or None)
-    
+
     db.session.add(cupcake)
     db.session.commit()
 
     # POST requests should return HTTP status of 201 CREATED
     return (jsonify(cupcake=cupcake.to_dict()), 201)
+
 
 @app.route("/api/cupcakes/<int:cupcake_id>")
 def get_cupcake(cupcake_id):
@@ -80,6 +91,7 @@ def update_cupcake(cupcake_id):
     db.session.commit()
 
     return jsonify(cupcake=cupcake.to_dict())
+
 
 @app.route("/api/cupcakes/<int:cupcake_id>", methods=["DELETE"])
 def remove_cupcake(cupcake_id):
