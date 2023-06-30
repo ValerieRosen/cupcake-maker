@@ -1,12 +1,15 @@
-#Models for cupcake app
+"""Models for Cupcake app."""
+
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+
 DEFAULT_IMAGE = "https://tinyurl.com/demo-cupcake"
 
+
 class Cupcake(db.Model):
-    """Cupcake"""
+    """Cupcake."""
 
     __tablename__ = "cupcakes"
 
@@ -17,7 +20,7 @@ class Cupcake(db.Model):
     image = db.Column(db.Text, nullable=False, default=DEFAULT_IMAGE)
 
     def to_dict(self):
-        """Serialize cupcake to a dict of cupcake info"""
+        """Serialize cupcake to a dict of cupcake info."""
 
         return {
             "id": self.id,
@@ -26,9 +29,10 @@ class Cupcake(db.Model):
             "size": self.size,
             "image": self.image,
         }
-    
+
+
 def connect_db(app):
-    """Connect to db"""
+    """Connect to database."""
 
     db.app = app
     db.init_app(app)

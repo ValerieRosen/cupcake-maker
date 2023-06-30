@@ -1,20 +1,20 @@
 from app import app
 from models import db, Cupcake
 
+
 db.drop_all()
 db.create_all()
 
 c1 = Cupcake(
-    flavor="cherry",
-    size="large",
-    rating=5,
+    flavor="Vanilla Bean",
+    size="Small",
+    rating=10,
 )
 
 c2 = Cupcake(
-    flavor="chocolate",
-    size="small",
+    flavor="Salted Caramel",
+    size="Large",
     rating=9,
-    image="https://www.bakedbyrachel.com/wp-content/uploads/2018/01/chocolatecupcakesccfrosting1_bakedbyrachel.jpg"
 )
 
 db.session.add_all([c1, c2])
